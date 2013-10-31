@@ -116,6 +116,9 @@ class DiagonalAlignData(BaseAlignData):
             z = p.solve(solver)
             return z.xf, z.ff, z.istop > 0, z.msg
         else:
+            if 'solver' in kwargs:
+                del kwargs['solver']
+
             r = minimize(func, x0, args=(self.mx, self.my, self.size), *args, **kwargs)
             return r.x, r.fun, r.success, r.message
     def _diff(self, n, *args, **kwargs):

@@ -5,13 +5,13 @@ import pylab
 
 if __name__ == '__main__':
     print "BD"
-    bd_file = '/Users/cliburn/hg/fcm/sample_data/3FITC_4PE_004.fcs'
+    bd_file = 'sample_data/3FITC_4PE_004.fcs'
     bd = FCSreader(bd_file)
     bd_data = bd.get_FCMdata()
     print bd_data.shape
 
     print "Coulter"
-    coulter_file = '/Users/cliburn/hg/fcm/sample_data/coulter.fcs'
+    coulter_file = 'sample_data/coulter.fcs'
     coulter = FCSreader(coulter_file)
     coulter_data = coulter.get_FCMdata()
     print coulter_data.shape

@@ -4,6 +4,7 @@ Unit test framework
 
 import unittest
 from test_Annotation import FCMAnnotationTestCase
+from test_FCM_collection import FCMcollectionTestCase
 from test_FCM_data import FCMdataTestCase
 from test_load_lmd import FCSreaderLMDTestCase
 from test_transforms import FCMtransformTestCase
@@ -41,10 +42,11 @@ if __name__ == "__main__":
     suite16 = unittest.makeSuite(DiagAlignTestCase, 'test')
     suite17 = unittest.makeSuite(OrderedDp_mixtureTestCase, 'test')
     suite18 = unittest.makeSuite(ClusterAlignTestCase, 'test')
+    suite19 = unittest.makeSuite(FCMcollectionTestCase, 'test')
     alltests = unittest.TestSuite((suite1, suite2, suite3, suite4, suite5,
                                     suite6, suite7, suite8,suite10, suite11,
                                     suite12, suite13, suite14, suite15,
-                                    suite16, suite17, suite18))
+                                    suite16, suite17, suite18, suite19))
 
     unittest.main()
 

@@ -4,7 +4,7 @@ import numpy as np
 
 class FCSreaderLMDTestCase(unittest.TestCase):
     def setUp(self):
-        self.fcm = FCSreader('../sample_data/coulter.lmd').get_FCMdata()
+        self.fcm = FCSreader('sample_data/coulter.lmd').get_FCMdata()
         
     def testGetPnts(self):
         self.assertEqual(self.fcm.shape[0], int(self.fcm.notes.text['tot']))
@@ -13,7 +13,7 @@ class FCSreaderLMDTestCase(unittest.TestCase):
         self.assertEqual(self.fcm.notes.text['cyt'], 'Cytomics FC 500')
         
     def testGetSecondFile(self):
-        x = FCSreader('../sample_data/coulter.lmd')
+        x = FCSreader('sample_data/coulter.lmd')
         z = x.get_FCMdata()
         y = x.get_FCMdata()
         self.assertEqual(z.shape, y.shape, 'Failed to load second dataset')

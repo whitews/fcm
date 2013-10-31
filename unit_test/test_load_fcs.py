@@ -4,7 +4,7 @@ from fcm import loadFCS
 
 class FCSreaderTestCase(unittest.TestCase):
     def setUp(self):
-        self.fcm = FCSreader('../sample_data/3FITC_4PE_004.fcs').get_FCMdata()
+        self.fcm = FCSreader('sample_data/3FITC_4PE_004.fcs').get_FCMdata()
         
     def testGetPnts(self):
         self.assertEqual(self.fcm.shape[0], int(self.fcm.notes.text['tot']))
@@ -14,11 +14,11 @@ class FCSreaderTestCase(unittest.TestCase):
         
     def testMultiLoad(self):
         for unused in range(100):
-            unused_x = loadFCS('../sample_data/3FITC_4PE_004.fcs', transform=None)
+            unused_x = loadFCS('sample_data/3FITC_4PE_004.fcs', transform=None)
             
     def testIOLoad(self):
         import io
-        with open('../sample_data/3FITC_4PE_004.fcs') as f:
+        with open('sample_data/3FITC_4PE_004.fcs') as f:
             mem_file = io.BytesIO(f.read())
             fcm_data = loadFCS(mem_file)
         
