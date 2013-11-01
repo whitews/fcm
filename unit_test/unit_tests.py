@@ -7,7 +7,7 @@ import unittest
 # include all the TestCase imports here
 from test_Annotation import FCMAnnotationTestCase
 from test_FCM_collection import FCMCollectionTestCase
-from test_FCM_data import FCMdataTestCase
+from test_FCM_data import FCMDataTestCase
 from test_load_lmd import FCSreaderLMDTestCase
 from test_transforms import FCMtransformTestCase
 from test_load_fcs import FCSreaderTestCase
