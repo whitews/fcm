@@ -1,5 +1,3 @@
-
-
 class ModelResult(object):
     '''
     Base Class for fitted model results

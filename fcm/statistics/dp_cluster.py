@@ -73,7 +73,6 @@ class DPCluster(Component):
         DPCluster.prob(x):
         returns probability of x belonging to this mixture component
         '''
-        #return self.pi * mvnormpdf(x, self.mu, self.sigma)
         d = self.mu.shape[0]
         return compmixnormpdf(x, self.pi, self.mu.reshape(1,-1), self.sigma.reshape(1,d,d), logged=logged, **kwargs)
 
@@ -145,7 +144,6 @@ class DPMixture(ModelResult):
         self.m = m
         self.s = s
 
-
     def __add__(self, k):
         new_clusters = [i + k for i in self.clusters]
         return DPMixture(new_clusters, self.niter, self.m, self.s, self.ident)
@@ -185,7 +183,6 @@ class DPMixture(ModelResult):
         returns an array of probabilities of x being in each component of the
         mixture
         '''
-        #return array([i.prob(x) for i in self.clusters])
         return compmixnormpdf(x, self.pis, self.mus, self.sigmas, logged=logged, **kwargs)
 
     def classify(self, x, **kwargs):
@@ -195,8 +192,6 @@ class DPMixture(ModelResult):
         '''
         probs = self.prob(x, logged=True, **kwargs)
         try:
-            unused_n, unused_j = x.shape
-            #return array([i.argmax(0) for i in probs])
             return probs.argmax(1)
         except ValueError:
             return probs.argmax(0)
@@ -547,7 +542,6 @@ class ModalDPMixture(DPMixture):
                 new_modes[i] = np.dot(a,self.modemap[i])
         return ModalDPMixture(new_clusters, self.cmap, new_modes, self.niter, self.m, self.s, self.ident)
 
-
     def __len__(self):
         return len(self.modemap)
 
@@ -578,7 +572,6 @@ class ModalDPMixture(DPMixture):
                 else:
                     rslt[j] = sum([self.clusters[i].prob(x) for i in self.cmap[j]])
 
-
         return rslt
 
     @property
@@ -603,8 +596,6 @@ class ModalDPMixture(DPMixture):
         for i in range(len(self.modes)):
             yield i, self.modes[i]
 
-
-
     def classify(self, x, **kwargs):
         '''
         ModalDPMixture.classify(x):
@@ -612,8 +603,6 @@ class ModalDPMixture(DPMixture):
         '''
         probs = self.prob(x, logged=True, **kwargs)
         try:
-            unused_n, unused_j = x.shape
-            #return array([i.argmax(0) for i in probs])
             return probs.argmax(1)
         except ValueError:
             return probs.argmax(0)

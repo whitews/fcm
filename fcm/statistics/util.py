@@ -13,6 +13,7 @@ from scipy.spatial.distance import pdist as _pdist, squareform
 
 from fcm.statistics.distributions import compmixnormpdf, mixnormpdf, mvnormpdf, mixnormrnd
 
+
 def bfs(g, start):
     """BFS generator from start node"""
     queue, enqueued = deque([(None, start)]), set([start])
@@ -22,6 +23,7 @@ def bfs(g, start):
         new = set(g[n]) - enqueued
         enqueued |= new
         queue.extend([(n, child) for child in new])
+
 
 def dfs(g, start):
     """DFS generator from start node"""
@@ -33,17 +35,21 @@ def dfs(g, start):
         enqueued |= new
         stack.extend([(n, child) for child in new])
 
+
 def flatten(listOfLists):
     "Flatten one level of nesting"
     return chain.from_iterable(listOfLists)
+
 
 def nodes(collection):
     """Return unique nodes"""
     return frozenset(node for node in flatten(collection) if node is not None)
 
+
 def find_components(g):
     """Find connected components in graph g"""
     return np.unique(frozenset([nodes(bfs(g, i)) for i in range(len(g))]))
+
 
 def matrix_to_graph(m):
     """Convert adjacency matrix to dictionary form of graph"""
@@ -52,6 +58,7 @@ def matrix_to_graph(m):
         graph[i] = np.nonzero(m[i, :])[0]
     return graph
 
+
 def pdist(x, w=None, scale=False):
     """Returns the distance matrix of points x. If scale is true,
     rescale distance by sqrt(number of dimensions).  If w is provided,
@@ -59,7 +66,6 @@ def pdist(x, w=None, scale=False):
     distance for efficiency rather than weighting of distances."""
     n, p = x.shape
     if w is not None:
-        #w = w / np.sum(w.astype(np.float))
         w = np.sqrt(w)
         print w
         print x
@@ -84,8 +90,7 @@ def modesearch(pis, mus, sigmas, tol=1e-6, maxiter=20, delta=0.1, w=None, scale=
         cur_mode = tuple(m[j, :].tolist())
         xs[key[0], :] = cur_mode
 
-    dm = pdist(xs, scale=scale, w=w) < delta#, w=np.array([1,1,1,1]))
-    #print 'm', m
+    dm = pdist(xs, scale=scale, w=w) < delta  #, w=np.array([1,1,1,1]))
     cs = find_components(matrix_to_graph(dm))
     cs = sorted(cs, key=len, reverse=True)
     
@@ -96,8 +101,6 @@ def modesearch(pis, mus, sigmas, tol=1e-6, maxiter=20, delta=0.1, w=None, scale=
         rslt[i] = tuple(j)
 
     return modes, rslt
-
-
 
 
 def _mode_search(pi, mu, sigma, nk=0, tol=0.000001, maxiter=20):
@@ -122,15 +125,12 @@ def _mode_search(pi, mu, sigma, nk=0, tol=0.000001, maxiter=20):
     spm = [] # density at starting points
 
     etol = np.exp(tol)
-    # rnd = int(-1*np.floor(np.log10(tol)))
-    rnd = 1
 
     for js in range(nk):
         x = allx[js]
         px = allpx[js]
         sm.append(x)
         spm.append(px)
-        # w = compmixnormpdf(allx,pi,mu,sigma)
         h = 0
         eps = 1 + etol
 
@@ -148,6 +148,7 @@ def _mode_search(pi, mu, sigma, nk=0, tol=0.000001, maxiter=20):
         mdict[(js, tuple(x))] = [x, px] # eliminate duplicates
 
     return mdict, sm, spm
+
 
 def check_mode(m, pm, pi, mu, sigma):
     """Check that modes are local maxima"""

@@ -6,6 +6,7 @@ distfunc = {'mean': mean_distance,
             'class': classification_distance,
             'kldiv': kldiv_distance}
 
+
 class AlignMixture(object):
     '''
     find alignment map between two mixture models
@@ -40,7 +41,3 @@ class AlignMixture(object):
                 min_unused +=1
 
         return my.reorder(translate)
-        
-        
-        
-        

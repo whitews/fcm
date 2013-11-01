@@ -26,7 +26,6 @@ class BaseAlignData(object):
 
         self.size = size
 
-
     def align(self, y, x0=None, *args, ** kwargs):
         '''
         Generate A and B that minimizes the distance between x and y
@@ -66,7 +65,6 @@ class BaseAlignData(object):
 
         return eKLdivVarDiff(self.mx, self.my, (self.my * a) + b, a, b)
 
-
     def _get_x0(self):
         raise NotImplementedError
 
@@ -81,11 +79,7 @@ class DiagonalAlignData(BaseAlignData):
     '''
     Generate Diagonal only alignment
     '''
-
     def _get_x0(self):
-#        shift = self.mx.mus.mean(0) - self.my.mus.mean(0)
-#
-#        scale = np.diag(self.mx.sigmas.mean(0)) / np.diag(self.my.sigmas.mean(0))
         x = self.mx.draw(self.size)
         y = self.my.draw(self.size)
         shift = -1 * y.mean(0) * x.std(0) / y.std(0) + x.mean(0)
@@ -198,6 +192,7 @@ class CompAlignData(BaseAlignData):
 
         return np.array(tmp)
 
+
 class FullAlignData(BaseAlignData):
     '''
     Generate full alignment matrix
@@ -222,7 +217,6 @@ class FullAlignData(BaseAlignData):
 
         if x0 is None:
             x0 = self._get_x0()
-
 
         #call minimizer on
         z , s, f, m = self._min(self._optimize, x0, *args, **kwargs)
@@ -268,9 +262,6 @@ class FullAlignData(BaseAlignData):
     def _get_x0(self):
         m = DiagonalAlignData(self.mx, self.size)
         scale, shift, f, s, m = m.align(self.my, options={'disp':False})
-#        shift = self.mx.mus.mean(0) - self.my.mus.mean(0)
-#
-#        scale = np.diag(self.mx.sigmas.mean(0)) / np.diag(self.my.sigmas.mean(0))
         return np.hstack((scale.flatten(), shift))
 
     def _format_x0(self, x0):

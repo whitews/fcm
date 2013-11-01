@@ -7,7 +7,6 @@ class Dime(object):
     DiME analysis object
     
     """
-
     def __init__(self, cluster=None, pi=None, mu=None, sigma=None, cmap=None):
         """
         DiME(pi, mu, sigma, cmap=None):
@@ -45,12 +44,12 @@ class Dime(object):
         if (self.pi is None or self.mu is None or self.sigma is None):
             raise TypeError('dime requires a cluster object or pi, mu, and sigma to be explicitly given')
 
-        if type(self.pi) == type([]): #not sure if htis is needed but the code expects pi to be a list
+        if type(self.pi) == type([]):  #not sure if htis is needed but the code expects pi to be a list
             self.pi = array(self.pi)
 
         self.k, self.p = self.mu.shape
         if cmap == None:
-            self.c = len(self.pi) # number of clusters
+            self.c = len(self.pi)  # number of clusters
             self.cpi = self.pi
             cmap = {}
             for i in range(self.c):
@@ -62,7 +61,6 @@ class Dime(object):
                 self.cpi.append(sum([pi[j] for j in cmap[clst]]))
         self.cmap = cmap
 
-
     def drop(self, target, drop=None):
         """
         calculate discriminitory information
@@ -70,12 +68,12 @@ class Dime(object):
         if drop is None:
             drop = []
         dim = {}
-        if type(drop) is type(1): # are we calculating single col?
+        if type(drop) is type(1):  # are we calculating single col?
             dim[0] = [ drop ]
-        else: # drop is a list...
+        else:  # drop is a list...
             if set(map(type, drop)) == set([type(1)]): # we've got a list of numbers
                 dim[0] = drop
-            else: #mostlikly a mixed list of list
+            else:  #mostlikly a mixed list of list
                 for c, i in enumerate(drop):
                     tmp = []
                     for j in range(self.p):
@@ -93,8 +91,6 @@ class Dime(object):
         for i in range(self.k):
             if i not in gpj:
                 indexj.append(i)
-
-
 
         for tt in range(nn):
             deno = 0
@@ -119,5 +115,3 @@ class Dime(object):
             Dj[tt] = nume / deno
 
         return Dj
-
-

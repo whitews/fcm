@@ -17,4 +17,3 @@ class KMeans(ModelResult):
 
     def centroids(self):
         return self.mus()
-

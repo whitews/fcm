@@ -60,10 +60,6 @@ def classification_distance(ref, test, test_data=None, ndraw=100000, **kwargs):
     cost = cost.astype(np.double)
     for i,j in enumerate(tot):
         cost[:,i] = cost[:,i]/j
-    #for i in range(len(ref)):
-    #    if i != cost[i,:].argmin():
-    #        print 'cost', i, 'tot', tot[i],'min',cost[i,:].argmin(), cost[i,:]
-    #return (cost / test_data.shape[0]).T.copy()
     return cost.T.copy()
 
 
@@ -96,17 +92,8 @@ if __name__ == '__main__':
     from munkres import munkres
     print 'Ref has means', A.mus, 'with weights', A.pis
     print 'Test has means', B.mus, 'with weights', B.pis
-#    print 'mean distance'
-#    print mean_distance(A, B)
-#    print munkres(mean_distance(A, B))
     mA = A.make_modal()
     mB = B.make_modal()
-#    print 'modal distance'
-#    print mean_distance(mA, mB)
-#    print munkres(mean_distance(mA, mB))
-#    print 'modal using means'
-#    print mean_distance(mA, mB, use_means=True)
-#    print munkres(mean_distance(mA, mB, use_means=True))
 
     print 'classification'
     print classification_distance(A, B)

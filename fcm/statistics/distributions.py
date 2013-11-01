@@ -8,28 +8,13 @@ from scipy.misc import logsumexp
 
 try:
     from gpustats import mvnpdf_multi
-    #from gpustats.util import threadSafeInit
     from dpmix.utils import select_gpu
     has_gpu = True
 except ImportError:
     has_gpu = False
 
 from dpmix.utils import mvn_weighted_logged
-#def mvnormpdf(x, mu, va):
-#    """
-#    multi variate normal pdf, derived from David Cournapeau's em package
-#    for mixture models
-#    http://www.ar.media.kyoto-u.ac.jp/members/david/softwares/em/index.html
-#    """
-#    d       = mu.size
-#    inva    = inv(va)
-#    fac     = 1 /sqrt( (2*pi) ** d * fabs(det(va)))
-#
-#    y   = -0.5 * dot(dot((x-mu), inva) * (x-mu), 
-#                       ones((mu.size, 1), x.dtype))
-#
-#    y   = fac * exp(y)
-#    return y
+
 
 def _mvnpdf(x, mu, va, n=1, logged=False, use_gpu=True, **kwargs):
     if len(x.shape) == 1:
@@ -51,6 +36,7 @@ def _mvnpdf(x, mu, va, n=1, logged=False, use_gpu=True, **kwargs):
             return mvn_weighted_logged(x, mu, va, ones(mu.shape[0]))
         else:
             return exp(mvn_weighted_logged(x, mu, va, ones(mu.shape[0])))
+
 
 def _wmvnpdf(x, pi, mu, va, d=1, logged=False, use_gpu=True, **kwargs):
     if len(x.shape) == 1:
@@ -102,6 +88,7 @@ def mvnormpdf(x, mu, va, **kwargs):
 
     return results.squeeze()
 
+
 def compmixnormpdf(x, prop, mu, Sigma, **kwargs):
     """Component mixture multivariate normal pdfs"""
     try:
@@ -133,6 +120,7 @@ def compmixnormpdf(x, prop, mu, Sigma, **kwargs):
         if n == 1:
             tmp = tmp[0]
     return tmp
+
 
 def mixnormpdf(x, prop, mu, Sigma, **kwargs):
     """Mixture of multivariate normal pdfs"""
@@ -184,5 +172,3 @@ if __name__ == '__main__':
     sig = array([[[1, .75], [.75, 1]], [[1, 0], [0, 1]]])
     p = array([.5, .5])
     print 'mix:', mixnormpdf(x, p, mu, sig)
-    #print 'mix:', mixnormpdf(x[0],p,mu,sig)
-
