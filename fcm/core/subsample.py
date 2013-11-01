@@ -131,18 +131,14 @@ class DropChannel(object):
         return fcs
 
 class AddChannel(object):
-    def __init__(self, events, name, sname=None):
+    def __init__(self, events, name):
         self.events = events
         self.name = name
-        if sname is None:
-            self.sname = name
-        else:
-            self.sname = sname
         
     def add(self, fcs):
         '''add channel to specified fcmdata object'''
         channels = fcs.get_cur_node().channels[:]
-        channels.append((self.name,self.sname))
+        channels.append(self.name)
         pnts = np.hstack([fcs[:], self.events])
         node = AddChannelNode('', fcs.get_cur_node(), pnts, channels)
         fcs.add_view(node)

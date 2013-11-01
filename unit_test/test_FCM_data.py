@@ -11,20 +11,17 @@ from numpy.testing.utils import assert_array_equal
 class FCMdataTestCase(unittest.TestCase):
     def setUp(self):
         self.pnts = array([[0,1,2],[3,4,5]])
-        self.fcm = FCMdata('test_fcm', self.pnts, [('fsc','fsc'),('ssc','ssc'),('fl-1','cd3')], [0,1])
+        self.fcm = FCMdata(
+            'test_fcm',
+            self.pnts,
+            ['fsc', 'ssc', 'fl-1'],
+            scatters=[0, 1])
         
     def testChannels(self):
         assert self.fcm.channels[0] == 'fsc', "channel property fails"
         
     def testLen(self):
         assert len(self.fcm) == 2, 'length wrong'
-        
-    def testShortNames(self):
-        assert self.fcm.short_names[2] == 'fl-1', "channel property fails"
-        
-    def testLongNames(self):
-        assert self.fcm.long_names[2] == 'fl-1::cd3', 'long names property fails: %s' % self.fcm.long_names[2]
-        assert self.fcm.long_names[0] == 'fsc', 'long names property fails: %s' % self.fcm.long_names[0]
         
     def testGetPnts(self):
         a = randint(0,1)
@@ -52,27 +49,6 @@ class FCMdataTestCase(unittest.TestCase):
         
     def testDeligate(self):
         assert self.fcm.mean() == self.pnts.mean(), "deligation of mean failed"
-        
-#    def testSubSample(self):
-#        self.fcm.subsample([2])
-#        assert self.fcm.view()[0] == self.pnts[0,2], "subsample failed"
-#        assert self.fcm.view()[1] == self.pnts[1,2], "subsample failed"
-        
-#    def testlogicle(self):
-#        from numpy.random import normal, lognormal, shuffle
-#        from numpy import concatenate
-#        from core.fcmtransforms import quantile
-#        from pylab import hist, show
-#    
-#        d1 = normal(0, 50, (50000))
-#        d2 = lognormal(8, 1, (50000))
-#        d3 = array([concatenate([d1, d2])]).T
-# 
-#        T = 262144
-#        d = 4
-#        m = d*log(10)
-#        r = quantile(d3[d3<0], 0.05)
-#        self.fcm = FCMdata(d3, ['a'])
 
     def testPolyGate(self):
         verts =  array([[-.1,-.1],[-.1,1.1],[1.1,1.1], [1.1,-.1]])
@@ -126,7 +102,11 @@ class FCMdataTestCase(unittest.TestCase):
 
     def testBoundaryEvents(self):
         pnts = array([[0,1,2],[3,4,5],[0,2,5]])
-        fcm = FCMdata('test_fcm', pnts, [('fsc','fsc'),('ssc','ssc'),('fl-1','cd3')], [0,1])
+        fcm = FCMdata(
+            'test_fcm',
+            pnts,
+            ['fsc', 'ssc', 'cd3'],
+            scatters=[0, 1])
         eps = 1e-10
         result = fcm.boundary_events()
     

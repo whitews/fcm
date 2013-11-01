@@ -1,8 +1,8 @@
 """
-A python object representing flow cytomoetry data
+A python object representing flow cytometry data
 """
 from __future__ import division
-from numpy import median, log, zeros
+from numpy import median, zeros
 from annotation import Annotation
 from transforms import logicle as _logicle
 from transforms import hyperlog as _hyperlog
@@ -11,7 +11,6 @@ from tree import Tree
 from fcm.core.compensate import compensate
 from fcm.core.subsample import Subsample, RandomSubsample, AnomalySubsample
 from fcm.core.subsample import BiasSubsample
-#from fcm.io.export_to_fcs import export_fcs
 from subsample import DropChannel, AddChannel
 
 class FCMdata(object):
@@ -21,7 +20,6 @@ class FCMdata(object):
     FCMdata.channels : a list of which markers/scatters are on which column of
     the array.
     FCMdata.scatters : a list of which indexes in fcmdata.channels are scatters
-
     """
 
     def __init__(self, name, pnts, channels, scatters=None, notes=None):
@@ -35,12 +33,9 @@ class FCMdata(object):
 
         """
         self.name = name
-#        if type(pnts) != type(array([])):
-#            raise BadFCMPointDataTypeError(pnts, "pnts isn't a numpy.array")
         self.tree = Tree(pnts, channels)
-        #self.pnts = pnts
-        #self.channels = channels
-        #TODO add some default intelegence for determining scatters if None
+
+        #TODO add some default intelligence for determining scatters if None
         self.scatters = scatters
         self.markers = []
         if self.scatters is not None:
@@ -90,20 +85,6 @@ class FCMdata(object):
     def channels(self):
         return [i for i in self.current_node.channels]
     
-    @property
-    def short_names(self):
-        return [i[0] for i in self.current_node.channels]
-    
-    @property
-    def long_names(self):
-        rslt = []
-        for i in self.current_node.channels:
-            if i[0] == i[1]:
-                rslt.append(i[0])
-            else:
-                rslt.append('::'.join(i))
-        return rslt
-    
     def __len__(self):
         return self.current_node.view().__len__()
     
@@ -115,19 +96,11 @@ class FCMdata(object):
                 raise AttributeError("'%s' has no attribue '%s'" % (str(self.__class__), name))
 
     def __getstate__(self):
-#        tmp = {}
-#        tmp['name'] = self.name
-#        tmp['tree'] = self.tree
-#        tmp['markers'] = self.markers
-#        tmp['scatters'] = self.scatters
-#        tmp['notes'] = self.notes
-#        return tmp
         return self.__dict__
 
     def __setstate__(self, dict):
         for i in dict.keys():
             self.__dict__[i] = dict[i]
-
 
     def name_to_index(self, channels):
         """Return the channel indexes for the named channels"""
@@ -136,10 +109,6 @@ class FCMdata(object):
             try:
                 if channels in self.channels:
                     return self.channels.index(channels)
-                elif channels in self.short_names:
-                    return self.short_names.index(channels)
-                elif channels in self.long_names:
-                    return self.long_names.index(channels)
                 else:
                     raise ValueError('%s is not in list' % channels)
 
@@ -149,28 +118,13 @@ class FCMdata(object):
                             return self.channels.index(self.notes.text['p%ds' % j])
                 raise ValueError('%s is not in list' % channels)
 
-
         idx = []
         for i in channels:
-#            try:
             if i in self.channels:
                 idx.append(self.channels.index(i))
-            elif i in self.short_names:
-                idx.append(self.short_names.index(i))
-            elif i in self.long_names:
-                idx.append(self.long_names.index(i))
             else:
                 raise ValueError('%s is not in list' % channels)
-#            except ValueError:
-#                try:
-#                    for j in range(1, int(self.notes.text['par']) + 1):
-#                        if i == self.notes.text['p%dn' % j]:
-#                            if self.channels[j-1] == self.notes.text['p%ds' % j]:
-#                                idx.append(j-1)
-#                            else:
-#                                idx.append(self.channels.index(self.notes.text['p%ds' % j]))
-#                except ValueError:
-#                    raise ValueError('%s is not in list' % i)
+
         if idx:
             return idx
         else:
@@ -334,12 +288,12 @@ class FCMdata(object):
         d.drop(self)
         return self
 
-    def add_channel(self, name, channel=None, short_name=None):
+    def add_channel(self, name, channel=None):
         if channel is None:
             channel = zeros((self.shape[0],1))
         
         print channel.shape
         
-        node = AddChannel(channel, name, short_name)
+        node = AddChannel(channel, name)
         node.add(self)
         return self
