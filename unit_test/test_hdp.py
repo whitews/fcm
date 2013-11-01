@@ -1,35 +1,32 @@
-from fcm.statistics import HDPMixtureModel, DPMixture
+from fcm.statistics import HDPMixtureModel
 import unittest
-from numpy import array, eye, all
 import numpy as np
 import numpy.random as npr
 from numpy.random import multivariate_normal
-from fcm.statistics.dp_cluster import DPMixture
-from time import time
 
 gen_mean = {
-    0 : [0, 5],
-    1 : [-5, 0],
-    2 : [5,0]
+    0: [0, 5],
+    1: [-5, 0],
+    2: [5,0]
 }
 
 gen_sd = {
-    0 : [0.5, 0.5],
-    1 : [.5, 1],
-    2 : [1, .25]
+    0: [0.5, 0.5],
+    1: [.5, 1],
+    2: [1, .25]
 }
 
 gen_corr = {
-    0 : 0.5,
-    1 : -0.5,
-    2 : 0
+    0: 0.5,
+    1: -0.5,
+    2: 0
 }
 
 group_weights1 = [0.4, 0.3, 0.3]
 group_weights2 = [.1, .1, .8]
 
 
-class HDPMixtureModel_TestCase(unittest.TestCase):
+class HDPMixtureModelTestCase(unittest.TestCase):
     def generate_data(self,n=1e4, k=2, ncomps=3, seed=1):
         
         npr.seed(seed)
@@ -50,8 +47,8 @@ class HDPMixtureModel_TestCase(unittest.TestCase):
     
             num1 = int(n * group_weights1[j])
             num2 = int(n * group_weights2[j])
-            rvs1 = multivariate_normal(mean, cov, size=num1)
-            rvs2 = multivariate_normal(mean, cov, size=num2)
+            rvs1 = multivariate_normal(mean, cov, size=(num1,))
+            rvs2 = multivariate_normal(mean, cov, size=(num2,))
             data1_concat.append(rvs1)
             data2_concat.append(rvs2)
             labels1_concat.append(np.repeat(j, num1))
@@ -66,31 +63,19 @@ class HDPMixtureModel_TestCase(unittest.TestCase):
         true, data = self.generate_data()
         model = HDPMixtureModel(3,100,100,1)
         model.seed = 1
-        start = time()
         r = model.fit(data, verbose=10)
-#        end = time() - start
-#        print r.pis.shape
-#        print r.pis, r.pis[0]
-#        print r[0],r[0].pis
         print r.mus
         self.assertEqual(len(r), 2, 'results are the wrong length: %d' %len(r))
         diffs = {}
-        #print 'r.mus:', r.mus()
         for i in gen_mean:
             diffs[i] = np.min(np.abs(r[0].mus-gen_mean[i]),0)
-            #print r[0].mus[0], np.min(np.abs(r[0].mus[0]-gen_mean[i]),0)
-            #diffs[i] = np.abs(r[0].mus()[i]-gen_mean[i])
-            #print i, gen_mean[i],r[0].mus()[i], diffs[i], np.vdot(diffs[i],diffs[i])
             self.assertLessEqual( np.vdot(diffs[i],diffs[i]),1, 
                                   'diff to large: %f' % np.vdot(diffs[i], diffs[i]))
         
         for i in gen_mean:
             diffs[i] = np.min(np.abs(r[1].mus-gen_mean[i]),0)
-            #diffs[i] = np.abs(r[1].mus()[i]-gen_mean[i])
-            #print i, gen_mean[i],r[1].mus()[i], diffs[i], np.vdot(diffs[i],diffs[i])
             self.assertLessEqual( np.vdot(diffs[i],diffs[i]),1, 
                                   'diff to large: %f' % np.vdot(diffs[i], diffs[i]))
-            
-        
+
 if __name__ == '__main__':
     unittest.main()

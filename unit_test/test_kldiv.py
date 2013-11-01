@@ -1,8 +1,8 @@
 from fcm.alignment.kldiv import eKLdiv, true_kldiv, eKLdivVar, eKLdivVarU
 import unittest
-import fcm
 from fcm.statistics import DPMixture, DPCluster
 import numpy as np
+
 
 class KLdivTestCase(unittest.TestCase):
     def setUp(self):

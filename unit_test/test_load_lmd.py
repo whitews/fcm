@@ -1,8 +1,7 @@
 import unittest
-from fcm  import FCSreader
-import numpy as np
+from fcm import FCSreader
 
-class FCSreaderLMDTestCase(unittest.TestCase):
+class FCSReaderLMDTestCase(unittest.TestCase):
     def setUp(self):
         self.fcm = FCSreader('sample_data/coulter.lmd').get_FCMdata()
         
@@ -18,9 +17,8 @@ class FCSreaderLMDTestCase(unittest.TestCase):
         y = x.get_FCMdata()
         self.assertEqual(z.shape, y.shape, 'Failed to load second dataset')
         self.assertNotEqual(z[0,0], y[0,0], 'Failed to load second dataset')
-        
 
 if __name__ == '__main__':
-    suite1 = unittest.makeSuite(FCSreaderLMDTestCase,'test')
+    suite1 = unittest.makeSuite(FCSReaderLMDTestCase,'test')
 
     unittest.main()

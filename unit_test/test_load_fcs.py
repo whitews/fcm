@@ -2,7 +2,7 @@ import unittest
 from fcm import FCSreader
 from fcm import loadFCS
 
-class FCSreaderTestCase(unittest.TestCase):
+class FCSReaderTestCase(unittest.TestCase):
     def setUp(self):
         self.fcm = FCSreader('sample_data/3FITC_4PE_004.fcs').get_FCMdata()
         
@@ -21,9 +21,8 @@ class FCSreaderTestCase(unittest.TestCase):
         with open('sample_data/3FITC_4PE_004.fcs') as f:
             mem_file = io.BytesIO(f.read())
             fcm_data = loadFCS(mem_file)
-        
 
 if __name__ == '__main__':
-    suite1 = unittest.makeSuite(FCSreaderTestCase,'test')
+    suite1 = unittest.makeSuite(FCSReaderTestCase,'test')
 
     unittest.main()

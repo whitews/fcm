@@ -10,8 +10,7 @@ from numpy.testing import assert_array_equal
 from numpy.testing.utils import assert_equal
 
 
-class Dp_mixtureTestCase(unittest.TestCase):
-
+class DPMixtureTestCase(unittest.TestCase):
 
     def setUp(self):
         self.mu1 = array([0, 0, 0])
@@ -24,19 +23,14 @@ class Dp_mixtureTestCase(unittest.TestCase):
                          self.clust1, self.clust2]
         self.mix = DPMixture(self.clusters,niter=3,identified=True)
 
-
     def tearDown(self):
         pass
 
-
     def testprob(self):
         pnt = array([[1, 1, 1]])
-        print pnt.shape
         for i in [self.clust1, self.clust2]:
-            print i.prob(pnt)
             assert i.prob(pnt) <= 1, 'prob of clst %s is > 1' % i
             assert i.prob(pnt) >= 0, 'prob of clst %s is < 0' % i
-
 
     def testmixprob(self):
         pnt = array([1, 1, 1])
@@ -51,20 +45,11 @@ class Dp_mixtureTestCase(unittest.TestCase):
     def testMakeModal(self):
 
         modal = self.mix.make_modal()
-#        modal = ModalDPMixture([self.clst1, self.clst2],
-#                                { 0: [0], 1: [1]},
-#                                [self.mu1, self.mu2])
-        pnt = array([self.mu1, self.mu2])
-        
         assert modal.classify(array([self.mu1, self.mu2, self.mu1, self.mu2, self.mu1, self.mu2])).tolist() == [1, 0, 1, 0, 1, 0], 'classify not working'
         #TODO do actual lookup.
-        #assert self.mix.classify(self.mu1) == modal.classify(self.mu1), 'derived modal mixture is wrong'
-        #assert self.mix.classify(pnt)[0] == modal.classify(pnt)[0], 'derived modal mixture is wrong'
-        #assert self.mix.classify(pnt)[1] == modal.classify(pnt)[1], 'derived modal mixture is wrong'
         
         modal = self.mix.make_modal(delta=9)
         assert modal.classify(array([self.mu1, self.mu2, self.mu1, self.mu2, self.mu1, self.mu2])).tolist() == [0, 0, 0, 0, 0, 0], 'classify not working'
-        
 
     def testAverage(self):
         clst1 = DPCluster(0.5, self.mu1, self.sig)
@@ -111,11 +96,6 @@ class Dp_mixtureTestCase(unittest.TestCase):
         assert all(new_r.clusters[2].mu == clst7.mu)
         assert all(new_r.clusters[3].mu == clst8.mu)
 
-        try:
-            new_r = mix.last(10)
-        except ValueError:
-                pass
-
     def testDraw(self):
         x = self.mix.draw(10)
         assert x.shape[0] == 10, "Number of drawed rows is wrong"
@@ -136,7 +116,6 @@ class Dp_mixtureTestCase(unittest.TestCase):
         self.assertIsInstance(c, DPMixture, 'array addition return wrong type')
         assert_array_equal(c.mus[0], self.mix.mus[0] + array_adder,
                      'array addition returned wrong value')
-
 
         # radd
         b = adder + self.mix
@@ -185,7 +164,6 @@ class Dp_mixtureTestCase(unittest.TestCase):
         self.assertIsInstance(d, DPMixture, 'array multiplicaton return wrong type')
         assert_array_equal(d.mus[0], dot(self.mix.mus[0], mat_adder),
                      'array multiplication returned wrong value')
-        
 
         # rmul
         b = adder * self.mix
@@ -225,23 +203,22 @@ class Dp_mixtureTestCase(unittest.TestCase):
     def testEnumerateClusters(self):
         for i,j in self.mix.enumerate_clusters():
             self.assertIsInstance(i, int)
-            self.assertIs(j, self.mix[i], 'fialed to return the right cluster when enumerating')
+            self.assertIs(j, self.mix[i], 'failed to return the right cluster when enumerating')
     
     def testEnumeratePis(self):
         for i,j in self.mix.enumerate_pis():
             self.assertIsInstance(i, int)
-            self.assertIs(j, self.mix[i].pi, 'fialed to return the right pi when enumerating')
+            self.assertIs(j, self.mix[i].pi, 'failed to return the right pi when enumerating')
     
     def testEnumerateMus(self):
         for i,j in self.mix.enumerate_mus():
             self.assertIsInstance(i, int)
-            self.assertIs(j, self.mix[i].mu, 'fialed to return the right mean when enumerating')
+            self.assertIs(j, self.mix[i].mu, 'failed to return the right mean when enumerating')
             
     def testEnumerateSigmas(self):
         for i,j in self.mix.enumerate_sigmas():
             self.assertIsInstance(i, int)
-            self.assertIs(j, self.mix[i].sigma, 'fialed to return the right covariance when enumerating')
-if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'Test.testName']
-    unittest.main()
+            self.assertIs(j, self.mix[i].sigma, 'failed to return the right covariance when enumerating')
 
+if __name__ == "__main__":
+    unittest.main()

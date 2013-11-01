@@ -6,9 +6,7 @@ from numpy.testing.utils import assert_equal
 from scipy.misc import logsumexp
 
 
-class ModalDp_clusterTestCase(unittest.TestCase):
-
-
+class ModalDPClusterTestCase(unittest.TestCase):
     def setUp(self):
         self.mu1 = array([0,0,0])
         self.sig = eye(3)
@@ -18,7 +16,6 @@ class ModalDp_clusterTestCase(unittest.TestCase):
         self.clst2 = DPCluster(.25, self.mu1, self.sig)
         self.clst3 = DPCluster(.5, self.mu2, self.sig)
         self.mix = ModalDPMixture([self.clst1, self.clst2, self.clst3], {0 : [0,1], 1 : [2]}, {0: self.mu1, 1:self.mu2})
-
 
     def tearDown(self):
         pass
@@ -42,7 +39,6 @@ class ModalDp_clusterTestCase(unittest.TestCase):
             assert i.prob(pnt) <= 1, 'prob of clst %s is > 1' % i
             assert i.prob(pnt) >= 0, 'prob of clst %s is < 0' % i
 
-        
     def testmixprob(self):
         pnt = array([1,1,1])
         assert self.mix.prob(pnt)[0] == (self.clst1.prob(pnt)+self.clst2.prob(pnt)), 'mixture generates different prob then compoent 1'
@@ -129,7 +125,6 @@ class ModalDp_clusterTestCase(unittest.TestCase):
         self.assertIsInstance(d, ModalDPMixture, 'array multiplicaton return wrong type')
         assert_array_equal(d.mus[0], dot(self.mix.mus[0], mat_adder),
                      'array multiplication returned wrong value')
-        
 
         # rmul
         b = adder * self.mix
@@ -152,5 +147,4 @@ class ModalDp_clusterTestCase(unittest.TestCase):
         assert_array_equal(d.sigmas[0], dot(mat_adder,dot(self.mix.sigmas[0], mat_adder)),
                            'array multiplcation failed')
 if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()

@@ -1,10 +1,10 @@
 import unittest
-from fcm.statistics import HDPMixture, DPMixture, DPCluster, ModalHDPMixture
-from numpy import array, eye, dot, array
+from fcm.statistics import HDPMixture, DPMixture, ModalHDPMixture
+from numpy import array, eye
 import numpy.testing
+
+
 class HDPMixtureTestCase(unittest.TestCase):
-
-
     def setUp(self):
         self.pis = array([[.1,.1,.8], [.1,.8,.1],[.8,.1,.1]])
         self.mus = array([[2,2],[3,3],[4,4]])

@@ -5,9 +5,9 @@ Created on Aug 27, 2009
 '''
 import unittest
 from fcm import FCMdata
-from fcm import PolyGate
 from fcm.core import SubsampleFactory
 from numpy import array
+
 
 class SubsampleTestCase(unittest.TestCase):
     def setUp(self):
@@ -30,7 +30,5 @@ class SubsampleTestCase(unittest.TestCase):
         self.fcm.subsample(self.samp).subsample(sam2)
         assert self.fcm.view() == 1, 'subsample chaining failed'
 
-
 if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'Test.testSubSample']
     unittest.main()

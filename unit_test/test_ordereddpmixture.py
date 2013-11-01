@@ -10,9 +10,7 @@ from numpy.testing import assert_array_equal
 from numpy.testing.utils import assert_equal
 
 
-class OrderedDp_mixtureTestCase(unittest.TestCase):
-
-
+class OrderedDPMixtureTestCase(unittest.TestCase):
     def setUp(self):
         self.mu1 = array([0, 0, 0])
         self.sig = eye(3)
@@ -22,13 +20,15 @@ class OrderedDp_mixtureTestCase(unittest.TestCase):
         self.clust2 = DPCluster(.5/3, self.mu2, self.sig)
         self.clusters = [self.clust1, self.clust2, self.clust1, self.clust2,
                          self.clust1, self.clust2]
-	self.lookup = {0:1, 1:2, 2:3, 3:4, 4:5, 5:5}
-        self.mix = OrderedDPMixture(self.clusters,self.lookup,niter=3,identified=True)
-
+        self.lookup = {0:1, 1:2, 2:3, 3:4, 4:5, 5:5}
+        self.mix = OrderedDPMixture(
+            self.clusters,
+            self.lookup,
+            niter=3,
+            identified=True)
 
     def tearDown(self):
         pass
-
 
     def testprob(self):
         pnt = array([1, 1, 1])
@@ -36,7 +36,6 @@ class OrderedDp_mixtureTestCase(unittest.TestCase):
         for i in [self.clust1, self.clust2]:
             assert i.prob(pnt) <= 1, 'prob of clst %s is > 1' % i
             assert i.prob(pnt) >= 0, 'prob of clst %s is < 0' % i
-
 
     def testmixprob(self):
         pnt = array([1, 1, 1])
@@ -51,9 +50,6 @@ class OrderedDp_mixtureTestCase(unittest.TestCase):
     def testMakeModal(self):
 
         modal = self.mix.make_modal()
-#        modal = ModalDPMixture([self.clst1, self.clst2],
-#                                { 0: [0], 1: [1]},
-#                                [self.mu1, self.mu2])
         pnt = array([self.mu1, self.mu2])
     
         assert modal.classify(array([self.mu1, self.mu2, self.mu1, self.mu2, self.mu1, self.mu2])).tolist() == [ 0, 1, 0, 1, 0, 1], 'classify not working'
@@ -63,7 +59,6 @@ class OrderedDp_mixtureTestCase(unittest.TestCase):
         
         modal = self.mix.make_modal(delta=9)
         assert modal.classify(array([self.mu1, self.mu2, self.mu1, self.mu2, self.mu1, self.mu2])).tolist() == [0, 0, 0, 0, 0, 0], 'classify not working'
-        
 
     def testAverage(self):
         clst1 = DPCluster(0.5, self.mu1, self.sig)
@@ -75,8 +70,8 @@ class OrderedDp_mixtureTestCase(unittest.TestCase):
         clst6 = DPCluster(0.5, self.mu2, self.sig)
         clst8 = DPCluster(0.5, self.mu2, self.sig)
 
-	lt = {}
-	for i in range(8):
+        lt = {}
+        for i in range(8):
             lt[i] = i
         mix = OrderedDPMixture([clst1, clst2, clst3, clst4, clst5, clst6, clst7, clst8], lt, niter=4)
         avg = mix.average()
@@ -99,8 +94,8 @@ class OrderedDp_mixtureTestCase(unittest.TestCase):
         clst6 = DPCluster(0.5, self.mu2 + 6, self.sig)
         clst8 = DPCluster(0.5, self.mu2 + 8, self.sig)
 
-	lt = {}
-	for i in range(8):
+        lt = {}
+        for i in range(8):
             lt[i] = i
         mix = OrderedDPMixture([clst1, clst2, clst3, clst4, clst5, clst6, clst7, clst8], lt,  niter=4)
 
@@ -115,11 +110,6 @@ class OrderedDp_mixtureTestCase(unittest.TestCase):
         assert all(new_r.clusters[1].mu == clst6.mu)
         assert all(new_r.clusters[2].mu == clst7.mu)
         assert all(new_r.clusters[3].mu == clst8.mu)
-
-        try:
-            new_r = mix.last(10)
-        except ValueError:
-                pass
 
     def testDraw(self):
         x = self.mix.draw(10)
@@ -140,7 +130,6 @@ class OrderedDp_mixtureTestCase(unittest.TestCase):
         self.assertIsInstance(c, OrderedDPMixture, 'array addition return wrong type')
         assert_array_equal(c.mus[0], self.mix.mus[0] + array_adder,
                      'array addition returned wrong value')
-
 
         # radd
         b = adder + self.mix
@@ -185,7 +174,6 @@ class OrderedDp_mixtureTestCase(unittest.TestCase):
         assert_array_equal(c.mus[0], dot(self.mix.mus[0], array_adder),
                      'array multiplication returned wrong value')
 
-
         # rmul
         b = adder * self.mix
         self.assertIsInstance(b, OrderedDPMixture, 'integer multiplication return wrong type')
@@ -196,7 +184,6 @@ class OrderedDp_mixtureTestCase(unittest.TestCase):
         self.assertIsInstance(c, OrderedDPMixture, 'array multiplication return wrong type')
         assert_array_equal(c.mus[0], dot(array_adder, self.mix.mus[0]),
                      'array multiplication returned wrong value')
-
 
     def testgetitem(self):
         assert_equal(self.mu1, self.mix[0].mu, 'getitem failed')
@@ -215,36 +202,37 @@ class OrderedDp_mixtureTestCase(unittest.TestCase):
                          'get_iteration return wrong number of clusters')
         
     def testEnumerateClusters(self):
-	k = 0
+        k = 0
         for i,j in self.mix.enumerate_clusters():
             self.assertIsInstance(i, int)
-	    self.assertEqual(i, self.lookup[k], 'failed to return the right number') 
-            self.assertIs(j, self.mix[k], 'fialed to return the right cluster when enumerating')
-	    k+=1
-    
+            self.assertEqual(i, self.lookup[k], 'failed to return the right number')
+            self.assertIs(j, self.mix[k], 'failed to return the right cluster when enumerating')
+            k += 1
+
     def testEnumeratePis(self):
-	k = 0
+        k = 0
         for i,j in self.mix.enumerate_pis():
             self.assertIsInstance(i, int)
-	    self.assertEqual(i, self.lookup[k], 'failed to return the right number') 
-            self.assertIs(j, self.mix[k].pi, 'fialed to return the right pi when enumerating')
-	    k+=1
-    
+            self.assertEqual(i, self.lookup[k], 'failed to return the right number')
+            self.assertIs(j, self.mix[k].pi, 'failed to return the right pi when enumerating')
+            k += 1
+
     def testEnumerateMus(self):
-	k = 0
-        for i,j in self.mix.enumerate_mus():
+        k = 0
+        for i, j in self.mix.enumerate_mus():
             self.assertIsInstance(i, int)
-	    self.assertEqual(i, self.lookup[k], 'failed to return the right number') 
-            self.assertIs(j, self.mix[k].mu, 'fialed to return the right mean when enumerating')
-	    k+=1
-            
+            self.assertEqual(i, self.lookup[k], 'failed to return the right number')
+            self.assertIs(j, self.mix[k].mu, 'failed to return the right mean when enumerating')
+            k += 1
+
     def testEnumerateSigmas(self):
-	k = 0
-        for i,j in self.mix.enumerate_sigmas():
+        k = 0
+        for i, j in self.mix.enumerate_sigmas():
             self.assertIsInstance(i, int)
-	    self.assertEqual(i, self.lookup[k], 'failed to return the right number') 
-            self.assertIs(j, self.mix[k].sigma, 'fialed to return the right covariance when enumerating')
-	    k+=1
+            self.assertEqual(i, self.lookup[k], 'failed to return the right number')
+            self.assertIs(j, self.mix[k].sigma, 'failed to return the right covariance when enumerating')
+            k += 1
+
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()

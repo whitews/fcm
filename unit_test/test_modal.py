@@ -23,7 +23,6 @@ if __name__ == '__main__':
     pylab.subplot(1,3,1)
     pylab.scatter(xs[:,0], xs[:,1], c=true_z)
     pylab.title("True")
-    #pylab.show()
     model = DPMixtureModel(xs, 6, 5000, 100, 1)
     model.gamma = 1.0
     model.fit(verbose=True)
@@ -50,7 +49,6 @@ if __name__ == '__main__':
         print '%d: ' % i,len(numpy.where(model_class == i)[0]), len(numpy.where(z == i)[0])
     print "cmap: ",modal.cmap
     print ctot, mtot
-    #modal.cmap = {0 : [0,1,2,3], 1 : [4,5,6,7]}
     print modal.prob(xs[0:10,:])
     print results.prob(xs[0:10,:])
     print modal.cmap
