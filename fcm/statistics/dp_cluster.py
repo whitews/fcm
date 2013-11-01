@@ -6,7 +6,7 @@ Created on Oct 30, 2009
 
 from fcm.statistics.distributions import compmixnormpdf
 from fcm.statistics.component import Component
-from numpy import array, log, sum, zeros, concatenate, mean, exp, ndarray, dot
+from numpy import array, log, sum, zeros, concatenate, mean, ndarray, dot
 from numpy import outer
 import numpy as np
 from scipy.misc import logsumexp
@@ -851,7 +851,7 @@ class ModalHDPMixture(HDPMixture):
 
         return ModalHDPMixture(self.pis, new_mu, new_sigma, self.cmap, self.modemap, self.niter, self.m, self.s)
 
-    def __rmul__(self, x):
+    def __rmul__(self, k):
         if isinstance(k, Number):
             new_mu = self.mus * k
             new_sigma = k * k * self.sigmas

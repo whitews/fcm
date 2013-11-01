@@ -4,7 +4,6 @@ Author: Jacob Frelinger <jacob.frelinger@duke.edu>
 '''
 
 import numpy as np
-from scipy.misc import logsumexp
 from scipy.optimize import minimize
 try:
     from openopt import NLP
@@ -13,7 +12,7 @@ try:
 except:
     _USE_OPENOPT = False
 
-from fcm.alignment.kldiv import eKLdivVar, eKLdivVarDiff, eSKLdivVar
+from fcm.alignment.kldiv import eKLdivVar, eKLdivVarDiff
 
 
 class BaseAlignData(object):

@@ -9,7 +9,6 @@ from numpy import zeros, outer, sum, eye, array, mean, cov, vstack, std, ones
 from numpy.random import multivariate_normal as mvn
 from numpy.random import seed
 from scipy.cluster import vq
-import collections
 
 from dpmix import DPNormalMixture, BEM_DPNormalMixture, HDPNormalMixture
 from fcm.core.fcmcollection import FCMCollection

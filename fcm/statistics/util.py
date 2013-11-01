@@ -3,14 +3,12 @@ Created on Nov 5, 2009
 
 @author: Jacob Frelinger
 '''
-#from scipy.optimize import fmin
-#from np import around, array, log10   
+
 from __future__ import division
 from numpy.linalg import solve, inv
 from collections import deque
 from itertools import chain
 import numpy as np
-import numpy.random as npr
 from scipy.spatial.distance import pdist as _pdist, squareform
 
 from fcm.statistics.distributions import compmixnormpdf, mixnormpdf, mvnormpdf, mixnormrnd

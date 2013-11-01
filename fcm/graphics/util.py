@@ -3,7 +3,6 @@ import numpy
 import math
 import pylab
 from fcm.core.transforms import _logicle as logicle
-# from scipy.interpolate import interp2d
 
 def bilinear_interpolate(x, y, bins=None):
     """Returns interpolated density values on points (x, y).
