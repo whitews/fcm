@@ -88,7 +88,7 @@ class FCMdata(object):
         self.tree.view()[item] = value
     @property
     def channels(self):
-        return [i[1] for i in self.current_node.channels]
+        return [i for i in self.current_node.channels]
     
     @property
     def short_names(self):
