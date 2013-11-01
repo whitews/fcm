@@ -3,11 +3,12 @@ Data structure for a collection of FCMData objects.
 All operations will be performed on each FCMData in the collection.
 """
 
-from UserDict import DictMixin
-from annotation import Annotation
+from collections import MutableMapping
+from fcm.core.annotation import Annotation
 import numpy
 
-class FCMcollection(DictMixin):
+
+class FCMCollection(MutableMapping):
     """
     Represent collection of FCMdata objects.
     Attributes: 
@@ -20,7 +21,7 @@ class FCMcollection(DictMixin):
         Initialize with fcm collection and notes.
         """
         #  - how is this done in fcmdata?
-        self.fcmdict = {}
+        self.fcmdict = dict()
         self.name = name
         if fcms is not None:
             for fcm in fcms:
@@ -47,6 +48,12 @@ class FCMcollection(DictMixin):
     def __delitem__(self, key):
         """delete fcmcollection.fcmdict[key]"""
         del self.fcmdict[key]
+
+    def __iter__(self):
+        return iter(self.fcmdict)
+
+    def __len__(self):
+        return len(self.fcmdict)
 
     def __getattr__(self, name):
         """Convenience function to access fcm object by name."""
@@ -155,9 +162,9 @@ class FCMcollection(DictMixin):
     
     
 if __name__ == '__main__':
-    from io import loadFCS
+    from fcm.io import loadFCS
     f1 = loadFCS('../../sample_data/3FITC_4PE_004.fcs')
-    fs = FCMcollection([f1])
+    fs = FCMCollection([f1])
 
     print fs.keys()
     print fs.values()

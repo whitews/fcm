@@ -2,7 +2,7 @@ import unittest
 from numpy import array, log10, where, eye
 
 from fcm import FCMdata
-from fcm import FCMcollection
+from fcm import FCMCollection
 from numpy.ma.testutils import assert_array_equal, assert_equal
 from fcm import PolyGate
 
@@ -12,7 +12,7 @@ class FCMCollectionTestCase(unittest.TestCase):
         pnts = array([[1, 1, 1], [5, 5, 5]])
         fcm1 = FCMdata('test_fcm1', pnts, ['fsc', 'ssc', 'cd3'], [0, 1])
         fcm2 = FCMdata('test_fcm2', pnts, ['fsc', 'ssc', 'cd3'], [0, 1])
-        self.fcms = FCMcollection('fcms', [fcm1, fcm2])
+        self.fcms = FCMCollection('fcms', [fcm1, fcm2])
         
     def test_check_names(self):
         pnts = array([[1, 1, 1], [5, 5, 5]])
@@ -20,8 +20,8 @@ class FCMCollectionTestCase(unittest.TestCase):
         fcm2 = FCMdata('test_fcm2', pnts, ['fsc', 'ssc', 'cd3'], [0, 1])
         fcm3 = FCMdata('test_fcm3', pnts, ['fsc', 'ssc', 'cd4'], [0, 1])
 
-        fcms1 = FCMcollection('fcms1', [fcm1, fcm2])
-        fcms2 = FCMcollection('fcms2', [fcm1, fcm2, fcm3, fcms1])
+        fcms1 = FCMCollection('fcms1', [fcm1, fcm2])
+        fcms2 = FCMCollection('fcms2', [fcm1, fcm2, fcm3, fcms1])
         
         check1 = fcms1.check_names()
         assert check1[fcms1.name] == [True, True, True]

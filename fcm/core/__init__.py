@@ -3,7 +3,7 @@ Core objects and methods for working with flow cytometry data
 '''
 
 from fcm.core.fcmdata import FCMdata
-from fcm.core.fcmcollection import FCMcollection
+from fcm.core.fcmcollection import FCMCollection
 from fcm.core.annotation import Annotation
 from fcm.core.fcmexceptions import BadFCMPointDataTypeError, UnimplementedFcsDataMode
 from fcm.core.fcmexceptions import CompensationError

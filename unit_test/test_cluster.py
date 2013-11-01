@@ -4,7 +4,7 @@ from numpy import array, eye
 import numpy as np
 from numpy.random import multivariate_normal
 from time import time
-from fcm import FCMdata, FCMcollection
+from fcm import FCMdata, FCMCollection
 
 gen_mean = {
     0: [0, 5],
@@ -81,7 +81,7 @@ class DPMixtureModelTestCase(unittest.TestCase):
         fcm1 = FCMdata('test_fcm1', data1, ['fsc', 'ssc'], [0, 1])
         fcm2 = FCMdata('test_fcm2', data2, ['fsc', 'ssc'], [0, 1])
         
-        c = FCMcollection('fcms', [fcm1, fcm2])
+        c = FCMCollection('fcms', [fcm1, fcm2])
         
         rs = model.fit(c)
         assert(len(rs) == 2)

@@ -12,7 +12,7 @@ from scipy.cluster import vq
 import collections
 
 from dpmix import DPNormalMixture, BEM_DPNormalMixture, HDPNormalMixture
-from fcm.core.fcmcollection import FCMcollection
+from fcm.core.fcmcollection import FCMCollection
 
 from dp_cluster import DPCluster, DPMixture, HDPMixture
 from kmeans import KMeans
@@ -179,7 +179,7 @@ class DPMixtureModel(object):
             self.prior_pi = array([pnts[self._ref == i].shape[0] / tot for i in range(self.nclusts)])
 
     def fit(self, fcmdata, verbose=False, normed=False):
-        if isinstance(fcmdata, FCMcollection):
+        if isinstance(fcmdata, FCMCollection):
             return [self._fit(fcmdata[i], verbose, normed) for i in fcmdata ]
         elif isinstance(fcmdata, list) or isinstance(fcmdata, tuple):
             return [self._fit(i, verbose, normed) for i in fcmdata ]
@@ -310,7 +310,7 @@ class HDPMixtureModel(DPMixtureModel):
         self.h0 = 0.1
         
     def fit(self, datasets, verbose=False, tune_interval=100):
-        if isinstance(datasets, FCMcollection):
+        if isinstance(datasets, FCMCollection):
             datasets = datasets.to_list()
         self.d = datasets[0].shape[1]
 
@@ -394,7 +394,7 @@ class KMeansModel(object):
         self.tol = tol
 
     def fit(self, fcmdata):
-        if isinstance(fcmdata, FCMcollection):
+        if isinstance(fcmdata, FCMCollection):
             return [self._fit(fcmdata[i]) for i in fcmdata ]
         elif isinstance(fcmdata, list) or isinstance(fcmdata, tuple):
             return [self._fit(i) for i in fcmdata ]
