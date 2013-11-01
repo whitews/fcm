@@ -1,7 +1,7 @@
 """setup all things exported from FCM
 """
 
-from fcm.core import FCMdata, FCMcollection
+from fcm.core import FCMdata, FCMCollection
 from fcm.core import Annotation
 from fcm.core import PolyGate, points_in_poly, QuadGate, IntervalGate, ThresholdGate
 from fcm.core import generate_f_score_gate
@@ -15,7 +15,7 @@ from fcm.core  import logicle, hyperlog
 __all__ = [
             #Objects
             'FCMdata',
-            'FCMcollection',
+            'FCMCollection',
             'PolyGate',
             'QuadGate',
             'IntervalGate',
