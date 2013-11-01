@@ -15,7 +15,7 @@ from test_dpmixture import Dp_mixtureTestCase
 from test_dpcluster import Dp_clusterTestCase
 from test_mdpmixture import ModalDp_clusterTestCase
 from test_mvnpdf import mvnpdfTestCase
-from test_cluster import DPMixtureModel_TestCase
+from test_cluster import DPMixtureModelTestCase
 from test_hdp import HDPMixtureModel_TestCase
 from test_hdpmixture import HDPMixtureTestCase
 from test_mhdpmixture import ModalHDp_clusterTestCase
@@ -34,7 +34,7 @@ if __name__ == "__main__":
     suite8 = unittest.makeSuite(Dp_clusterTestCase, 'test')
     suite9 = unittest.makeSuite(ModalDp_clusterTestCase, 'test')
     suite10 = unittest.makeSuite(mvnpdfTestCase, 'test')
-    suite11 = unittest.makeSuite(DPMixtureModel_TestCase, 'test')
+    suite11 = unittest.makeSuite(DPMixtureModelTestCase, 'test')
     suite12 = unittest.makeSuite(HDPMixtureModel_TestCase, 'test')
     suite13 = unittest.makeSuite(Dp_mixtureTestCase, 'test')
     suite14 = unittest.makeSuite(HDPMixtureTestCase, 'test')
@@ -43,10 +43,6 @@ if __name__ == "__main__":
     suite17 = unittest.makeSuite(OrderedDp_mixtureTestCase, 'test')
     suite18 = unittest.makeSuite(ClusterAlignTestCase, 'test')
     suite19 = unittest.makeSuite(FCMcollectionTestCase, 'test')
-    alltests = unittest.TestSuite((suite1, suite2, suite3, suite4, suite5,
-                                    suite6, suite7, suite8,suite10, suite11,
-                                    suite12, suite13, suite14, suite15,
-                                    suite16, suite17, suite18, suite19))
 
     unittest.main()
 
