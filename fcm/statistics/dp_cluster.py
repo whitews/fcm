@@ -1,8 +1,8 @@
-'''
+"""
 Created on Oct 30, 2009
 
 @author: Jacob Frelinger
-'''
+"""
 
 from fcm.statistics.distributions import compmixnormpdf
 from fcm.statistics.component import Component
@@ -21,19 +21,19 @@ from modelresult import ModelResult
 
 
 class DPCluster(Component):
-    '''
+    """
     Single component cluster in mixture model
-    '''
+    """
 
     __array_priority__ = 10
 
     def __init__(self, pi, mu, sig, centered_mu=None, centered_sigma=None):
-        '''
+        """
         DPCluster(pi,mu,sigma)
         pi = cluster weight
         mu = cluster mean
         sigma = cluster variance/covariance
-        '''
+        """
         self.pi = pi
         self.mu = mu
         self.sigma = sig
@@ -69,17 +69,17 @@ class DPCluster(Component):
         self._centered_sigma = s
 
     def prob(self, x, logged=False, **kwargs):
-        '''
+        """
         DPCluster.prob(x):
         returns probability of x belonging to this mixture component
-        '''
+        """
         d = self.mu.shape[0]
         return compmixnormpdf(x, self.pi, self.mu.reshape(1,-1), self.sigma.reshape(1,d,d), logged=logged, **kwargs)
 
     def draw(self, n=1):
-        '''
+        """
         draw a random sample of size n form this cluster
-        '''
+        """
         # cast n to a int incase it's a numpy.int
         n = int(n)
         return mvn(self.mu, self.sigma, n)
@@ -127,17 +127,17 @@ class DPCluster(Component):
 
 
 class DPMixture(ModelResult):
-    '''
+    """
     collection of components that describe a mixture model
-    '''
+    """
 
     __array_priority__ = 10
 
     def __init__(self, clusters, niter=1, m=None, s=None, identified=False):
-        '''
+        """
         DPMixture(clusters)
         cluster = list of DPCluster objects
-        '''
+        """
         self.clusters = clusters
         self.niter = niter
         self.ident = identified
@@ -178,18 +178,18 @@ class DPMixture(ModelResult):
         return self.clusters.__setitem__(s, values)
 
     def prob(self, x, logged=False, **kwargs):
-        '''
+        """
         DPMixture.prob(x)
         returns an array of probabilities of x being in each component of the
         mixture
-        '''
+        """
         return compmixnormpdf(x, self.pis, self.mus, self.sigmas, logged=logged, **kwargs)
 
     def classify(self, x, **kwargs):
-        '''
+        """
         DPMixture.classify(x):
         returns the classification (which mixture) x is a member of
-        '''
+        """
         probs = self.prob(x, logged=True, **kwargs)
         try:
             return probs.argmax(1)
@@ -198,10 +198,10 @@ class DPMixture(ModelResult):
 
     @property
     def mus(self):
-        '''
+        """
         DPMixture.mus():
         returns an array of all cluster means
-        '''
+        """
         return array([i.mu for i in self.clusters])
 
     @property
@@ -210,10 +210,10 @@ class DPMixture(ModelResult):
 
     @property
     def sigmas(self):
-        '''
+        """
         DPMixture.sigmas():
         returns an array of all cluster variance/covariances
-        '''
+        """
         return array([i.sigma for i in self.clusters])
 
     @property
@@ -222,10 +222,10 @@ class DPMixture(ModelResult):
 
     @property
     def pis(self):
-        '''
+        """
         DPMixture.pis()
         return an array of all cluster weights/proportions
-        '''
+        """
         return array([i.pi for i in self.clusters])
 
     def make_modal(self, **kwargs):
@@ -241,16 +241,16 @@ class DPMixture(ModelResult):
             return ModalDPMixture(self.clusters, cmap, modes, self.niter, self.m, self.s)
 
     def log_likelihood(self, x):
-        '''
+        """
         return the log likelihood of x belonging to this mixture
-        '''
+        """
 
         return sum(log(sum(self.prob(x), axis=0)))
 
     def draw(self, n):
-        '''
+        """
         draw n samples from the represented mixture model
-        '''
+        """
 
         d = multinomial(n, self.pis)
         results = None
@@ -264,12 +264,12 @@ class DPMixture(ModelResult):
         return results
 
     def average(self):
-        '''
+        """
         average over mcmc draws to try and find the 'average' weights, means,
         and covariances
-        '''
+        """
         if not self.ident:
-            warn("model wasn't run with ident=True, therefor these averages "
+            warn("model wasn't run with ident=True, therefore these averages "
                  "are likely meaningless")
 
         k = len(self.clusters) / self.niter
@@ -300,9 +300,9 @@ class DPMixture(ModelResult):
         return DPMixture(rslts, 1, m, s)
 
     def last(self, n=1):
-        '''
+        """
         return the last n (defaults to 1) mcmc draws
-        '''
+        """
         if n > self.niter:
             raise ValueError('n=%d is larger than niter (%d)' % (n, self.niter))
         rslts = []
@@ -314,9 +314,9 @@ class DPMixture(ModelResult):
         return DPMixture(rslts[::-1])
     
     def get_submodel(self, idxs):
-        '''
+        """
         return a sub model of only specific clusters
-        '''
+        """
         if isinstance(idxs, Number):
             idxs = [idxs]
         rslts = [deepcopy(self.clusters[i]) for i in idxs]
@@ -326,12 +326,12 @@ class DPMixture(ModelResult):
         return DPMixture(rslts,1,self.m, self.s, self.ident)
     
     def get_iteration(self, iters):
-        '''
+        """
         return a sub model of specific iterations
         x.get_iteration(0) returns a DPMixture of the first iteration
         x.get_iteration([0,2,4,6]) returs a DPMixture of iterations 0,2,4,6,
             eg. poor mans thinning.
-        '''
+        """
         if isinstance(iters, Number):
             iters = [iters]
         for i, j in enumerate(iters):
@@ -380,9 +380,9 @@ class DPMixture(ModelResult):
         return DPMixture(rslts, self.niter, self.m, self.s, self.ident)
 
     def enumerate_clusters(self):
-        '''
+        """
         enumerate through clusters
-        '''
+        """
         for i in range(len(self.clusters)):
             yield i, self.clusters[i]
 
@@ -391,29 +391,29 @@ class DPMixture(ModelResult):
             yield i, self.clusters[i].pi
 
     def enumerate_mus(self):
-        '''
+        """
         enumerate through the clusters means
-        '''
+        """
         for i in range(len(self.clusters)):
             yield i, self.clusters[i].mu
 
     def enumerate_sigmas(self):
-        '''
+        """
         enumerate through the cluster covariances
-        '''
+        """
         for i in range(len(self.clusters)):
             yield i, self.clusters[i].sigma
 
     def reorder(self, lookup):
-        '''
+        """
         add an order to a DPMixture
-        '''
+        """
         return OrderedDPMixture(self.clusters, lookup, self.niter, self.m, self.s, self.ident)
 
 class OrderedDPMixture(DPMixture):
-    '''
+    """
     a ordered/identified DPMixture
-    '''
+    """
     def __init__(self, clusters, lookup, niter=1, m=None, s=None, identified=False):
         self.lookup = lookup
         super(OrderedDPMixture, self).__init__(clusters, niter, m, s, identified)
@@ -437,9 +437,9 @@ class OrderedDPMixture(DPMixture):
         return super(OrderedDPMixture, self).__rmul__(k).reorder(self.lookup)
 
     def enumerate_clusters(self):
-        '''
+        """
         enumerate through clusters
-        '''
+        """
         for i in range(len(self.clusters)):
             yield self.lookup[i], self.clusters[i]
 
@@ -448,16 +448,16 @@ class OrderedDPMixture(DPMixture):
             yield self.lookup[i], self.clusters[i].pi
 
     def enumerate_mus(self):
-        '''
+        """
         enumerate through the clusters means
-        '''
+        """
         for i in range(len(self.clusters)):
             yield self.lookup[i], self.clusters[i].mu
 
     def enumerate_sigmas(self):
-        '''
+        """
         enumerate through the cluster covariances
-        '''
+        """
         for i in range(len(self.clusters)):
             yield self.lookup[i], self.clusters[i].sigma
 
@@ -468,17 +468,17 @@ class OrderedDPMixture(DPMixture):
         
 
 class ModalDPMixture(DPMixture):
-    '''
+    """
     collection of modal components that describe a mixture model
-    '''
+    """
 
     def __init__(self, clusters, cmap, modes, niter=1, m=False, s=False, ident=False):
-        '''
+        """
         ModalDPMixture(clusters)
         cluster = list of DPCluster objects
         cmap = map of modal clusters to component clusters
         modes = array of mode locations
-        '''
+        """
         self.clusters = clusters
         self.cmap = cmap
         self.modemap = modes
@@ -546,11 +546,11 @@ class ModalDPMixture(DPMixture):
         return len(self.modemap)
 
     def prob(self, x, logged=False, **kwargs):
-        '''
+        """
         ModalDPMixture.prob(x)
         returns  an array of probabilities of x being in each mode of the modal
         mixture
-        '''
+        """
         probs = compmixnormpdf(x, self.pis, self.mus, self.sigmas, logged=logged, **kwargs)
 
         #can't sum in log prob space
@@ -576,10 +576,10 @@ class ModalDPMixture(DPMixture):
 
     @property
     def modes(self):
-        '''
+        """
         ModalDPMixture.modes():
         return an array of mode locations
-        '''
+        """
         lst = []
         for i in self.modemap.itervalues():
             try:
@@ -597,10 +597,10 @@ class ModalDPMixture(DPMixture):
             yield i, self.modes[i]
 
     def classify(self, x, **kwargs):
-        '''
+        """
         ModalDPMixture.classify(x):
         returns the classification (which mixture) x is a member of
-        '''
+        """
         probs = self.prob(x, logged=True, **kwargs)
         try:
             return probs.argmax(1)
@@ -611,13 +611,13 @@ class ModalDPMixture(DPMixture):
         return OrderedModalDPMixture(self.clusters, self.cmap, self.modemap, lookup, self.niter, self.m, self.s)
 
 class OrderedModalDPMixture(ModalDPMixture):
-    '''
+    """
     an ordered Modal DP Mixture
-    '''
+    """
     def __init__(self, clusters, cmap, modes, lookup,niter=1, m=False, s=False):
-        '''
+        """
         clusters, cmap, modes, lookup, m=False, s=False
-        '''
+        """
         super(OrderedModalDPMixture, self).__init__(clusters, cmap, modes,niter, m, s)
         self.lookup = lookup
 
@@ -652,9 +652,9 @@ class OrderedModalDPMixture(ModalDPMixture):
         return lut[z]
 
 class HDPMixture(Component):
-    '''
+    """
     a 'collection' of DPMixtures with common means and variances
-    '''
+    """
 
     __array_priority__ = 10
 
@@ -794,12 +794,12 @@ class OrderedHDPMixture(HDPMixture):
 
 class ModalHDPMixture(HDPMixture):
     def __init__(self, pis, mus, sigmas, cmap, modemap, niter=1, m=None, s=None):
-        '''
+        """
         ModalHDPMixture(clusters)
         cluster = HDPMixture object
         cmap = map of modal clusters to component clusters
         modes = array of mode locations
-        '''
+        """
         self.pis = pis.copy()
         self.mus = mus.copy()
         self.sigmas = sigmas.copy()
@@ -862,10 +862,10 @@ class ModalHDPMixture(HDPMixture):
 
     @property
     def modes(self):
-        '''
+        """
         ModalDPMixture.modes():
         return an array of mode locations
-        '''
+        """
         lst = []
         for i in self.modemap.itervalues():
             try:

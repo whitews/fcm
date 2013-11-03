@@ -1,7 +1,7 @@
-'''
+"""
 Created on May 16, 2013
 Author: Jacob Frelinger <jacob.frelinger@duke.edu>
-'''
+"""
 
 import numpy as np
 from scipy.optimize import minimize
@@ -16,9 +16,9 @@ from fcm.alignment.kldiv import eKLdivVar, eKLdivVarDiff
 
 
 class BaseAlignData(object):
-    '''
+    """
     base class to align a data set to a reference data set
-    '''
+    """
     def __init__(self, x, size=100000):
 
         self.mx = x
@@ -27,9 +27,9 @@ class BaseAlignData(object):
         self.size = size
 
     def align(self, y, x0=None, *args, ** kwargs):
-        '''
+        """
         Generate A and B that minimizes the distance between x and y
-        '''
+        """
         self.my = y
         if x0 is None:
             x0 = self._get_x0()
@@ -76,9 +76,9 @@ class BaseAlignData(object):
 
 
 class DiagonalAlignData(BaseAlignData):
-    '''
+    """
     Generate Diagonal only alignment
-    '''
+    """
     def _get_x0(self):
         x = self.mx.draw(self.size)
         y = self.my.draw(self.size)
@@ -133,9 +133,9 @@ class DiagonalAlignData(BaseAlignData):
 
 
 class CompAlignData(BaseAlignData):
-    '''
+    """
     Generate 'compensation' alignment: (only estimate off diagonals)
-    '''
+    """
     def _get_x0(self):
         a = np.zeros(self.d ** 2 - self.d)
         return a
@@ -194,9 +194,9 @@ class CompAlignData(BaseAlignData):
 
 
 class FullAlignData(BaseAlignData):
-    '''
+    """
     Generate full alignment matrix
-    '''
+    """
     def __init__(self, x, size=100000, exclude=None):
         if exclude is None:
             exclude = []
@@ -209,9 +209,9 @@ class FullAlignData(BaseAlignData):
         self.mxm = self.mx.get_marginal(self.include)
 
     def align(self, y, x0=None, *args, ** kwargs):
-        '''
+        """
         Generate A and B that minimizes the distance between x and y
-        '''
+        """
         self.my = y
         self.mym = self.my.get_marginal(self.include)
 

@@ -1,7 +1,7 @@
 import unittest
 from fcm.statistics import DPCluster, ModalHDPMixture, ModalDPMixture
-from numpy import array, eye, all, vstack
-import numpy
+from numpy import array, eye, all
+import numpy.testing as npt
 
 
 class ModalHDPClusterTestCase(unittest.TestCase):
@@ -42,29 +42,29 @@ class ModalHDPClusterTestCase(unittest.TestCase):
     def testgetitem(self):
         r = self.mix[0]
         self.assertIsInstance(r, ModalDPMixture, 'get item returned wrong type')
-        numpy.testing.assert_array_equal(r.modes[0], self.mix.modes[0], 'modes changed under getitem')
+        npt.assert_array_equal(r.modes[0], self.mix.modes[0], 'modes changed under getitem')
 
     def testclassify(self):
         pnt = array([self.mu1, self.mu2])
         
-        numpy.testing.assert_array_equal(self.mix.classify(array([self.mu1, self.mu2, self.mu1, self.mu2, self.mu1, self.mu2])), array([[0, 1, 0, 1, 0, 1], [0, 1, 0, 1, 0, 1]]), 'classify not working')
-        numpy.testing.assert_array_equal(self.mix.classify(pnt)[0], array([0, 1]), 'classify classifys mu1 as belonging to something else')
-        numpy.testing.assert_array_equal(self.mix.classify(pnt)[1], array([0, 1]), 'classify classifys m21 as belonging to something else')
+        npt.assert_array_equal(self.mix.classify(array([self.mu1, self.mu2, self.mu1, self.mu2, self.mu1, self.mu2])), array([[0, 1, 0, 1, 0, 1], [0, 1, 0, 1, 0, 1]]), 'classify not working')
+        npt.assert_array_equal(self.mix.classify(pnt)[0], array([0, 1]), 'classify classifys mu1 as belonging to something else')
+        npt.assert_array_equal(self.mix.classify(pnt)[1], array([0, 1]), 'classify classifys m21 as belonging to something else')
 
     def test_arith(self):
-        numpy.testing.assert_array_equal((self.mix+2).mus, self.mix.mus+2,
+        npt.assert_array_equal((self.mix+2).mus, self.mix.mus+2,
                                     "Failed addition")
-        numpy.testing.assert_array_equal((self.mix*2).mus, self.mix.mus*2,
+        npt.assert_array_equal((self.mix*2).mus, self.mix.mus*2,
                                     "Failed multiplication")
-        numpy.testing.assert_array_equal((self.mix*2).sigmas, self.mix.sigmas*4,
+        npt.assert_array_equal((self.mix*2).sigmas, self.mix.sigmas*4,
                                     "failed multiplication")
         
-        numpy.testing.assert_equal((self.mix*2).sigmas.shape, self.mix.sigmas.shape, 'multiplication failed')
+        npt.assert_equal((self.mix*2).sigmas.shape, self.mix.sigmas.shape, 'multiplication failed')
         
-        numpy.testing.assert_array_equal((self.mix+2).pis, self.mix.pis,
+        npt.assert_array_equal((self.mix+2).pis, self.mix.pis,
                                     "addition changes pi values")
         
-        numpy.testing.assert_array_equal((self.mix*eye(3)).sigmas, self.mix.sigmas, 'multicplication failed')
+        npt.assert_array_equal((self.mix*eye(3)).sigmas, self.mix.sigmas, 'multicplication failed')
 
 if __name__ == "__main__":
     unittest.main()

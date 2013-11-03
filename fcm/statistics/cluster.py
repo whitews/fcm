@@ -1,8 +1,8 @@
-'''
+"""
 Created on Oct 30, 2009
 
 @author: jolly
-'''
+"""
 
 from numpy import zeros, outer, sum, eye, array, mean, cov, vstack, std, ones
 from numpy.random import multivariate_normal as mvn
@@ -17,19 +17,19 @@ from kmeans import KMeans
 
 
 class DPMixtureModel(object):
-    '''
+    """
     Fits a DP Mixture model to a fcm dataset.
 
-    '''
+    """
     def __init__(self, nclusts, niter=1000, burnin=100, last=None, type='mcmc'):
-        '''
+        """
         DPMixtureModel(nclusts, niter=1000, burnin= 100, last= None)
         nclusts = number of clusters to fit
         niter = number of mcmc itterations to sample
         burning = number of mcmc burnin itterations
         last = number of mcmc itterations to draw samples from, if None last = niter
 
-        '''
+        """
         self.nclusts = nclusts
         self.niter = niter
         self.burnin = burnin
@@ -273,14 +273,14 @@ class DPMixtureModel(object):
             return None # TODO raise exception
 
 class HDPMixtureModel(DPMixtureModel):
-    '''
+    """
     HDPMixtureModel(nclusts, niter=1000, burnin= 100, last= None)
     nclusts = number of clusters to fit
     niter = number of mcmc itterations
     burning = number of mcmc burnin itterations
     last = number of mcmc itterations to draw samples from. if None last = niter
 
-    '''
+    """
     def __init__(self, *args, **kwargs):
         super(HDPMixtureModel, self).__init__(*args, **kwargs)
         self.g0 = 0.1
@@ -339,10 +339,10 @@ class HDPMixtureModel(DPMixtureModel):
             return HDPMixture(pis, mus, sigmas, self.last, self.m, self.s, self.ident)
 
 class KMeansModel(object):
-    '''
+    """
     KmeansModel(data, k, niter=20, tol=1e-5)
     kmeans clustering model
-    '''
+    """
     def __init__(self, k, niter=20, tol=1e-5):
 
         self.k = k

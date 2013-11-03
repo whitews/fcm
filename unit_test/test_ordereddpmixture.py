@@ -1,8 +1,8 @@
-'''
+"""
 Created on Oct 30, 2009
 
 @author: Jacob Frelinger
-'''
+"""
 import unittest
 from fcm.statistics import DPCluster, OrderedDPMixture, DPMixture
 from numpy import array, eye, all, dot
@@ -234,6 +234,5 @@ class OrderedDPMixtureTestCase(unittest.TestCase):
             k += 1
 
 if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'Test.testName']
     unittest.main()
 

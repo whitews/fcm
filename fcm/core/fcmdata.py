@@ -219,7 +219,7 @@ class FCMdata(object):
             return r.subsample(self, *args, **kwargs)
 
     def compensate(self, sidx=None, spill=None):
-        '''Compensate the fcm data'''
+        """Compensate the fcm data"""
 
         compensate(self, S=spill, markers=sidx)
         return self
@@ -267,16 +267,16 @@ class FCMdata(object):
         return boundary_dict
 
     def export(self, file_name):
-        '''
+        """
         export out current view to a fcs file
-        '''
+        """
         from fcm.io import export_fcs
         export_fcs(file_name, self.view(), self.current_node.channels, self.notes.text)
 
     def extract_channels(self, channels, keep=False):
-        '''
+        """
         create a view without the specified channels or with if keep==True
-        '''
+        """
         if isinstance(channels, basestring) or isinstance(channels, int):
             channels = [channels]
         for i, j in enumerate(channels):

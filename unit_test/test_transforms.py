@@ -14,5 +14,4 @@ class FCMtransformTestCase(unittest.TestCase):
 
 if __name__ == '__main__':
     suite1 = unittest.makeSuite(FCMtransformTestCase, 'test')
-
     unittest.main()

@@ -1,8 +1,8 @@
-'''
+"""
 Created on Aug 27, 2009
 
 @author: Jacob Frelinger <Jacob.Frelinger@duke.edu>
-'''
+"""
 import unittest
 from fcm import FCMdata
 from fcm.core import SubsampleFactory

@@ -78,7 +78,7 @@ class InheritanceGraph(object):
 
     py_sig_re = re.compile(r'''^([\w.]*\.)?    # class names
                            (\w+)  \s* $        # optionally arguments
-                           ''', re.VERBOSE)
+                           """, re.VERBOSE)
 
     def _import_class_or_module(self, name):
         """

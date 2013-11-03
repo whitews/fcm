@@ -21,40 +21,63 @@ class KLdivTestCase(unittest.TestCase):
         self.x = DPMixture(self.clustersx, niter=1, identified=True)
         self.y = DPMixture(self.clustersy, niter=1, identified=True)
 
-    def testTrueKLdiv(self):
+    def test_true_kldiv(self):
         f = eKLdiv(self.x, self.y, 3000000)
         g = true_kldiv(self.mux, self.muy, self.sigx, self.sigy)
-        self.assertAlmostEqual(f, g, 2, 'fialed to generate simialr ansers, f:%f, g:%f' % (f, g))
+        self.assertAlmostEqual(
+            f,
+            g,
+            2,
+            'failed to generate similar answers, f:%f, g:%f' % (f, g))
 
-    def testRandomTrueKLdiv(self):
-        y= self.y + np.random.uniform(-1,1,3)
+    def test_random_true_kldiv(self):
+        y = self.y + np.random.uniform(-1, 1, 3)
         f = eKLdiv(self.x, y, 3000000)
         g = true_kldiv(self.mux, y.mus[0], self.sigx, y.sigmas[0])
-        self.assertAlmostEqual(f, g, 2, 'fialed to generate simialr ansers, f:%f, g:%f' % (f, g))
+        self.assertAlmostEqual(
+            f,
+            g,
+            2,
+            'failed to generate similar answers, f:%f, g:%f' % (f, g))
 
-    def testeKLdivVar(self):
+    def teste_kldiv_var(self):
         f = eKLdivVar(self.x, self.y, 0)
         g = true_kldiv(self.mux, self.muy, self.sigx, self.sigy)
-        self.assertAlmostEqual(f, g, 2, 'fialed to generate simialr ansers, f:%f, g:%f' % (f, g))
+        self.assertAlmostEqual(
+            f,
+            g,
+            2,
+            'failed to generate similar answers, f:%f, g:%f' % (f, g))
         
-    def testRandomeKLdivVar(self):
-        y= self.y + np.random.uniform(-1,1,3)
+    def test_random_ekldivvar(self):
+        y = self.y + np.random.uniform(-1, 1, 3)
         f = eKLdivVar(self.x, y, 3000000)
         g = true_kldiv(self.mux, y.mus[0], self.sigx, y.sigmas[0])
-        self.assertAlmostEqual(f, g, 2, 'fialed to generate simialr ansers, f:%f, g:%f' % (f, g))
+        self.assertAlmostEqual(
+            f,
+            g,
+            2,
+            'failed to generate similar answers, f:%f, g:%f' % (f, g))
 
-    def testeKLdivVarU(self):
-        f = eKLdivVarU(self.x, self.y, 0)
+    def test_ekldivvaru(self):
+        f = eKLdivVarU(self.x, self.y)
         g = true_kldiv(self.mux, self.muy, self.sigx, self.sigy)
-        self.assertAlmostEqual(f, g, 2, 'fialed to generate simialr ansers, f:%f, g:%f' % (f, g))
+        self.assertAlmostEqual(
+            f,
+            g,
+            2,
+            'failed to generate similar answers, f:%f, g:%f' % (f, g))
         
-    def testRandomeKLdivVarU(self):
-        y= self.y + np.random.uniform(-1,1,3)
-        f = eKLdivVarU(self.x, y, 3000000)
+    def test_random_ekldivvaru(self):
+        y = self.y + np.random.uniform(-1, 1, 3)
+        f = eKLdivVarU(self.x, y)
         g = true_kldiv(self.mux, y.mus[0], self.sigx, y.sigmas[0])
-        self.assertAlmostEqual(f, g, 2, 'fialed to generate simialr ansers, f:%f, g:%f' % (f, g))
+        self.assertAlmostEqual(
+            f,
+            g,
+            2,
+            'failed to generate similar answers, f:%f, g:%f' % (f, g))
         
 if __name__ == '__main__':
-    suite1 = unittest.makeSuite(KLdivTestCase,'test')
-
+    suite1 = unittest.makeSuite(KLdivTestCase, 'test')
     unittest.main()

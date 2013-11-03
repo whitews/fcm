@@ -5,7 +5,6 @@ import numpy.testing
 
 
 class DPClusterTestCase(unittest.TestCase):
-
     def setUp(self):
         self.mu1 = array([0, 0, 0])
         self.sig = eye(3)

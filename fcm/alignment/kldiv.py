@@ -1,7 +1,7 @@
-'''
+"""
 Created on May 16, 2013
 Author: Jacob Frelinger <jacob.frelinger@duke.edu>
-'''
+"""
 
 from __future__ import division
 import numpy as np
@@ -63,7 +63,7 @@ def eKLdiv(x, y, n=100000, **kwargs):
         1.0/n * (np.sum(logsumexp(px, 1)) - np.sum(logsumexp(py, 1))), 0)
 
 
-def eKLdivVar(x,y, n=100000, **kwargs):
+def eKLdivVar(x, y, n=100000, **kwargs):
     if len(x) == 1 and len(y) == 1:
         return true_kldiv(x[0].mu, y[0].mu, x[0].sigma, y[0].sigma)
     z = []
@@ -78,7 +78,7 @@ def eSKLdivVar(x, y, n=100000, **kwargs):
     return eKLdivVar(x, y, n, **kwargs) + eKLdivVar(y, x, n, **kwargs)
 
 
-def eKLdivVarU(x,y):
+def eKLdivVarU(x, y):
     z = []
     for i in x.clusters:
         for j in y.clusters:

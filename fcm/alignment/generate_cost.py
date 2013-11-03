@@ -1,8 +1,8 @@
-'''
+"""
 Created on May 6, 2013
 
 @author: Jacob Frelinger <jacob.frelinger@duke.edu>
-'''
+"""
 import numpy as np
 from scipy.spatial.distance import cdist
 import fcm.statistics as stats
@@ -12,11 +12,11 @@ from fcm.statistics.dp_cluster import ModalDPMixture
 
 
 def mean_distance(ref, test, use_means=None, **kwargs):
-    '''
+    """
     calculate cost matrix using mean distance between mixture models
     optional argument use_means controls overiding default use of modes if
     available
-    '''
+    """
     if use_means:
         try:
             x = ref.centered_mus
@@ -41,9 +41,9 @@ def mean_distance(ref, test, use_means=None, **kwargs):
 
 
 def classification_distance(ref, test, test_data=None, ndraw=100000, **kwargs):
-    '''
+    """
     generate cost matrix using miss classification as distance
-    '''
+    """
     if test_data is None:
         test_data = ref.draw(ndraw)
 
@@ -64,9 +64,9 @@ def classification_distance(ref, test, test_data=None, ndraw=100000, **kwargs):
 
 
 def kldiv_distance(ref, test, use_means=None, ndraws=100000, **kwargs):
-    '''
+    """
     generate cost matrix using kl-divergence
-    '''
+    """
     if isinstance(ref, ModalDPMixture) and isinstance(test, ModalDPMixture):
         xs = [ref.get_submodel(ref.cmap[j]) for j in ref.cmap]
         ys = [test.get_submodel(test.cmap[j]) for j in test.cmap]

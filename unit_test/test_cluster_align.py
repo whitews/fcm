@@ -50,10 +50,10 @@ class ClusterAlignTestCase(unittest.TestCase):
             'failed to return an ordered mixture')
         for i in r.lookup:
             self.assertEqual(
-            i+1, r.lookup[i],
-            'assignment failed %d : %d' % (i, r.lookup[i]))
+                i+1, r.lookup[i],
+                'assignment failed %d : %d' % (i, r.lookup[i]))
 
 if __name__ == '__main__':
-    suite1 = unittest.makeSuite(ClusterAlignTestCase,'test')
+    suite1 = unittest.makeSuite(ClusterAlignTestCase, 'test')
 
     unittest.main()

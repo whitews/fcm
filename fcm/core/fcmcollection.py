@@ -101,9 +101,9 @@ class FCMCollection(MutableMapping):
         return self
     
     def logicle(self, *args, **kwargs):
-        '''
+        """
         apply logicle transform to the fcs objects in the collection
-        '''
+        """
         
         #TODO make it atomic?
         for i in self.fcmdict:
@@ -111,32 +111,32 @@ class FCMCollection(MutableMapping):
         return self
     
     def compensate(self, *args, **kwargs):
-        '''
+        """
         apply compensation to the fcs objects in a collection
-        '''
+        """
         for i in self.fcmdict:
             self.fcmdict[i].compensate(*args, **kwargs)
         return self
     
     def gate(self, *args, **kwargs):
-        '''
+        """
         apply a gate to the fcs objects in a collection
-        '''
+        """
         for i in self.fcmdict:
             self.fcmdict[i].gate(*args, **kwargs)
         return self
     
     def summary(self):
-        '''
+        """
         produce summary statitsics for each fcs object in the collection
-        '''
+        """
         
         return '\n'.join(['%s:\n%s' % (i,self.fcmdict[i].summary()) for i in self.fcmdict])
 
     def classify(self, mixture):
-        '''
+        """
         classify each fcs object in the collection using a mixture model
-        '''
+        """
         
         rslt = {}
         for i in self.fcmdict:
@@ -144,9 +144,9 @@ class FCMCollection(MutableMapping):
         return rslt
     
     def fit(self, model, *args, **kwargs):
-        '''
+        """
         fit a mixture model to each fcs object in a collection
-        '''
+        """
         
         rslt = {}
         for i in self.fcmdict:
@@ -154,9 +154,9 @@ class FCMCollection(MutableMapping):
         return rslt
     
     def to_list(self):
-        '''
+        """
         return a list of the fcmdata objects contained in the collection
-        '''
+        """
         
         return [self.fcmdict[i] for i in self.fcmdict]
     

@@ -7,7 +7,7 @@ from numpy.random import multivariate_normal
 gen_mean = {
     0: [0, 5],
     1: [-5, 0],
-    2: [5,0]
+    2: [5, 0]
 }
 
 gen_sd = {
@@ -54,28 +54,39 @@ class HDPMixtureModelTestCase(unittest.TestCase):
             labels1_concat.append(np.repeat(j, num1))
             labels2_concat.append(np.repeat(j, num2))
     
-        return ([np.concatenate(labels1_concat), np.concatenate(labels2_concat)],
-                [np.concatenate(data1_concat, axis=0),
-                 np.concatenate(data2_concat, axis=0)])
+        return (
+            [
+                np.concatenate(labels1_concat),
+                np.concatenate(labels2_concat)
+            ],
+            [
+                np.concatenate(data1_concat, axis=0),
+                np.concatenate(data2_concat, axis=0)
+            ]
+        )
         
-    def testMCMCFitting(self):
+    def test_mcmc_fitting(self):
         print "starting mcmc"
         true, data = self.generate_data()
-        model = HDPMixtureModel(3,100,100,1)
+        model = HDPMixtureModel(3, 100, 100, 1)
         model.seed = 1
         r = model.fit(data, verbose=10)
         print r.mus
-        self.assertEqual(len(r), 2, 'results are the wrong length: %d' %len(r))
+        self.assertEqual(len(r), 2, 'results are the wrong length: %d' % len(r))
         diffs = {}
         for i in gen_mean:
-            diffs[i] = np.min(np.abs(r[0].mus-gen_mean[i]),0)
-            self.assertLessEqual( np.vdot(diffs[i],diffs[i]),1, 
-                                  'diff to large: %f' % np.vdot(diffs[i], diffs[i]))
+            diffs[i] = np.min(np.abs(r[0].mus-gen_mean[i]), 0)
+            self.assertLessEqual(
+                np.vdot(diffs[i], diffs[i]),
+                1,
+                'diff to large: %f' % np.vdot(diffs[i], diffs[i]))
         
         for i in gen_mean:
-            diffs[i] = np.min(np.abs(r[1].mus-gen_mean[i]),0)
-            self.assertLessEqual( np.vdot(diffs[i],diffs[i]),1, 
-                                  'diff to large: %f' % np.vdot(diffs[i], diffs[i]))
+            diffs[i] = np.min(np.abs(r[1].mus-gen_mean[i]), 0)
+            self.assertLessEqual(
+                np.vdot(diffs[i], diffs[i]),
+                1,
+                'diff to large: %f' % np.vdot(diffs[i], diffs[i]))
 
 if __name__ == '__main__':
     unittest.main()

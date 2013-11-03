@@ -1,8 +1,8 @@
-'''
+"""
 Created on Nov 5, 2009
 
 @author: Jacob Frelinger
-'''
+"""
 
 from __future__ import division
 from numpy.linalg import solve, inv

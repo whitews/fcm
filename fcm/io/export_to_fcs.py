@@ -1,8 +1,8 @@
-'''
+"""
 Created on Feb 24, 2012
 
 @author: Jacob Frelinger
-'''
+"""
 
 
 def text_size(dict,delim):

@@ -29,5 +29,4 @@ class TreeTestCase(unittest.TestCase):
         
 if __name__ == '__main__':
     suite1 = unittest.makeSuite(TreeTestCase,'test')
-
     unittest.main()
